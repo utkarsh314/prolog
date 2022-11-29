@@ -1,10 +1,13 @@
-triple(H, X) :-
-    sublist([H,H,H|[]], X).
-sublist([], L).
-sublist([H|T1], [H|T2]) :-
-    sublist(T1, T2).
-sublist([H1|T1], [_|T2]) :-
-    sublist([H1|T1], T2).
-has_triplicate(X) :-
-    triple(H, X),
-    write(H).
+count(_, [], 0).
+count(H, [H|T], C) :-
+    !,
+    count(H, T, D),
+    C is D+1.
+count(H1, [_|T], C) :-
+    count(H1, T, C).
+triple(L, [H|T]) :-
+    count(H, L, C), C > 2, write(H);
+    triple(L, T).
+has_triplicate(L) :-
+    sort(L, S),
+    triple(L, S).
